@@ -14,16 +14,10 @@ export ORACLE_BASE=/oracle_base
 
 # Email function
 email(){
-  content="WARNING: DB2 is NOT replicating from DB1. Please, check it ASAP.";
-  email="lucas@example.com";
+  to="lucas@example.com";
   subject="WARNING: DB2 is NOT up-to-date with DB1";
-  from="no-reply@example.com"
-  {
-    echo "Subject: $subject"
-    echo "From: $from";
-    echo "To: $email";
-    echo "$content"
-  } | $(which sendmail) -F "$from" "$email"
+  body="MESSAGE: \nDB2 is not up-to-date with DB1. \nLast Archiving log applied on DB1: $COUNT_DB1_2. \nLast Archiving log applied on DB2: $COUNT_DB2_2."
+  echo -e "$body" | mail -s "WARNING: DB2 is NOT up-to-date with DB1" -aFrom:no-reply\<no-reply@example.com\> $to
 }
 
 # Getting the max(sequence) value from v$log_history
